@@ -15,7 +15,7 @@ clear all
 //========================================================
  
 * use "${CCSA2020}Projections_constant2019.dta", clear
-use "data/Projections_constant2019.dta", clear
+use "data/wbg-projections_constant2019.dta", clear
 keep if inrange(year,2018,2021)
 // keep distribution-neutral scenario only
 keep if inlist(alpha,0,.) 

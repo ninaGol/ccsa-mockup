@@ -1,10 +1,11 @@
 # World Bank: COVID-19 pushing 71 to 100 million people into extreme poverty #
 
 <!-- 
-If separate preprocessing is required in STATA, include instructions here;
-.do files can be included in the /contrib directory.
+Data pre-processing is done in STATA. See contrib/wbg-CCSA_PSPS2020nowcast.do
 -->
 
+*Note: this is a demonstration chapter copied from volume 2 of the CCSA's COVID-19
+series of reports.*
 
 **COVID-19 is taking its toll on the world, causing deaths, illnesses and economic
 despair. This contribution suggests that COVID-19 is pushing about 71 to 100 million
