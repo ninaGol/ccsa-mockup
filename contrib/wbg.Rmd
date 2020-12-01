@@ -13,15 +13,25 @@ regions hardest hit.**
 
 ```{r wbg-1, fig.cap='The impact of COVID-19 on global poverty'}
 
-df = read.csv('data/wbg-1.csv', check.names=FALSE) %>% gather(scenario, value, !Year)
+df <-  read_csv(here('data', 'wbg-1.csv')) %>% 
+   pivot_longer(!Year, 
+                names_to = "scenario", 
+                values_to = "value")
 
-viz = ggplot(df, aes(x=Year, y=value, group=scenario)) +
-  geom_line(aes(color=scenario), size=1) + 
-  geom_point(aes(color=scenario)) + 
-  labs(x="", y="Millions of poor") +
+viz = ggplot(df, 
+             aes(x=Year, 
+                 y=value, 
+                 color=scenario)) +
+  geom_line(size=1) + 
+  geom_point() + 
+  labs(x="", 
+       y="Millions of poor") +
   scale_x_continuous(breaks=c(2015:2021)) + 
-  scale_y_continuous(breaks=seq(550,750, by=20), limits=c(550,750)) +
-  theme(legend.position="bottom", legend.title=element_blank())
+  scale_y_continuous(breaks=seq(550,750, by=20), 
+                     limits=c(550,750)) +
+  theme_minimal() +
+  theme(legend.position="bottom", 
+        legend.title=element_blank())
 
 ggplotly(viz, tooltip=c('scenario', 'Year', 'value')) %>%
   layout(legend=list(orientation='h', x=0, y=-0.1))
@@ -75,17 +85,34 @@ into poverty.
 
 ```{r wbg-2, fig.cap='The regional distribution of the COVID-19-induced poor'}
 
-df = read.csv('data/wbg-2.csv', check.names=FALSE) %>%
-      rename(povline='Poverty line in PPP$ (per capita per day)', projection='Years of GDP data used for growth projections') %>%
+df = read_csv(here('data', 'wbg-2.csv')) %>%
+      rename(povline   ='Poverty line in PPP$ (per capita per day)', 
+             projection='Years of GDP data used for growth projections') %>%
       select(!povline) %>%
-      gather(region, value, !projection)
+    pivot_longer(!projection, 
+                names_to = "region", 
+                values_to = "value") %>% 
+  mutate(
+    text = paste("Region:", region, "\n",
+                 "Scenario:", projection, "\n",
+                 "Mill. of poor:", value, "\n")
+  )
 
-viz = ggplot(df, aes(x=forcats::fct_rev(projection), y=value, fill=region)) +
-  geom_bar(stat='identity', position=position_dodge()) + coord_flip() +
+
+viz <- ggplot(filter(df, value > 0)) + # in case we want to filter North America 
+  geom_bar(aes(x    = reorder(projection, value), 
+               y    = value, 
+               fill = reorder(region, value), 
+               text = text),
+           stat='identity', 
+           position=position_dodge()) + 
+  coord_flip() +
   labs(y='Millions of poor added to extreme poverty', x='') +
-  theme(legend.position='bottom', legend.title=element_blank())
+  theme_minimal() +
+  theme(legend.position='bottom', 
+        legend.title=element_blank())
 
-ggplotly(viz) %>%
+ggplotly(viz, tooltip = "text") %>%
   layout(legend=list(orientation='h', x=0, y=-0.2))
 ```
 
