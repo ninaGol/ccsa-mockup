@@ -40,6 +40,8 @@ new ways of using data science tools for communication and collaboration;
 demonstrate the potential of open data, open code, and reproducible research, and;
 learn from our shared knowledge and experimentation.
 
+Project [source code is here](https://github.com/tgherzog/ccsa-mockup/tree/prototype).
+
 [ccsa]: https://unstats.un.org/unsd/ccsa
 
 
